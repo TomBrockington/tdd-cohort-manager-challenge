@@ -1,0 +1,23 @@
+- Cohort
+  - Properties
+    - cohortName: string
+    - students: [] of JS Object (or possibly StudentDetails? see below)
+  - Methods
+    - findStudent( studentName )
+      - returns StudentDetails for student with `studentName`
+      - returns ERROR Student not found if `studentName` does not exist
+    - addStudent( studentDetails )
+      - adds studentDetails if student does not already exist and returns true
+      - returns ERROR Student already exists otherwise
+
+- CohortManager
+  - Properties
+    - cohorts: [] of Cohort
+  - Methods
+    - addStudent( cohortName, studentDetails )
+      - adds studentDetails to Cohort with `cohortName` if Cohort exists and student has not already been added
+        - returns true if successful
+        - returns ERROR Cohort not found if `cohortName` is not a valid Cohort
+        - returns ERROR Student already exists if student already added
+
+- StudentDetails ?? We could consider making this a class rather than just using a JS Object
