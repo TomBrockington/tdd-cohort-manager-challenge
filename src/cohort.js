@@ -1,53 +1,65 @@
+const Student = require('./student')
 class Cohort {
-  constructor() {
-    this.cohorts = []
+  constructor(name) {
+    this.name = name
+    this.students = []
   }
 
-  create(name) {
-    // declair a variable that launches the check()
-    // if var === name.check() return already exisits
-    const existingCohort = this.checkCohortExists(name)
-    if (existingCohort === false) {
-      this.cohorts.push(name)
-      console.log('cohort added', this.cohorts)
-      const lastElement = this.cohorts.length - 1
-      return this.cohorts[lastElement]
-    } else {
-      return `${name} already exists`
-    }
+  createStudent(firstName, lastName, studentID, email, githubUser) {
+    const student = new Student(
+      firstName,
+      lastName,
+      studentID,
+      email,
+      githubUser
+    )
+    this.students.push(student)
+    return student
   }
 
-  checkCohortExists(name) {
-    for (let i = 0; i < this.cohorts.length; i++) {
-      if (this.cohorts[i] === name) {
-        console.log(this.cohorts[i], ' already exists')
-        return this.cohorts[i]
+  addStudentToCohort(studentDetails) {
+    for (let i = 0; i < this.students.length; i++) {
+      if (this.students[i].studentID === studentDetails.studentID) {
+        return 'Student already in cohort'
       }
     }
-    return false
+    return this.createStudent(
+      studentDetails.firstName,
+      studentDetails.lastName,
+      studentDetails.studentID,
+      studentDetails.email,
+      studentDetails.githubUser
+    )
   }
 
-  removeCohort(name) {
-    for (let i = 0; i < this.cohorts.length; i++) {
-      if (this.cohorts[i] === name) {
-        this.cohorts.splice(i, 1)
-        console.log('cohort removed =', name)
-        console.log('remaining cohorts =', this.cohorts)
-        return this.cohorts
-      }
-    }
-    return 'Cohort not found'
-  }
+  // removeStudentFromCohort(cohortName, studentDetails.studentID) {
+  //   for (let i = 0; i < this.students.length; i++) {
+  //     if (this.students[i].studentID === studentDetails.studentID) {
+  //       return 'Student already in cohort'
+  //     }
+  //   }
+  //   return this.createStudent(
+  //     studentDetails.firstName,
+  //     studentDetails.lastName,
+  //     studentDetails.studentID,
+  //     studentDetails.email,
+  //     studentDetails.githubUser
+  //   )
+  // }
 
-  searchForCohortbyName(name) {
-    for (let i = 0; i < this.cohorts.length; i++) {
-      if (this.cohorts[i] === name) {
-        console.log('found ', this.cohorts[i])
-        return this.cohorts[i]
-      }
-    }
-    return 'Name does not exist'
-  }
+  // create(name) {
+  //   // declair a variable that launches the check()
+  //   // if var === name.check() return already exisits
+  //   const existingCohort = this.checkCohortExists(name)
+  //   if (existingCohort === false) {
+  //     this.cohorts.push(name)
+  //     console.log('cohort added', this.cohorts)
+  //     const lastElement = this.cohorts.length - 1
+  //     return this.cohorts[lastElement]
+  //   } else {
+  //     return `${name} already exists`
+  //   }
+  // }
 }
 
 module.exports = Cohort
