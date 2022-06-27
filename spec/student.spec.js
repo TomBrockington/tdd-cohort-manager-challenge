@@ -25,13 +25,13 @@ describe('Student', () => {
     const githubUser = 'tomGit'
     // execute)
 
-    const expectedResult = {
-      firstName: 'Tom',
-      lastName: 'Brockington',
-      studentID: 1,
-      email: 'tom@gmail.com',
-      githubUser: 'tomGit'
-    }
+    // const expectedResult = {
+    //   firstName: 'Tom',
+    //   lastName: 'Brockington',
+    //   studentID: 1,
+    //   email: 'tom@gmail.com',
+    //   githubUser: 'tomGit'
+    // }
     const result = new Student(
       firstName,
       lastName,
@@ -40,7 +40,11 @@ describe('Student', () => {
       githubUser
     )
     // verify
-    expect(result).toEqual(expectedResult)
+    expect(result.firstName).toEqual(firstName)
+    expect(result.lastName).toEqual(lastName)
+    expect(result.studentID).toEqual(studentID)
+    expect(result.email).toEqual(email)
+    expect(result.githubUser).toEqual(githubUser)
   })
 
   it('create student and add to cohort 1', () => {
