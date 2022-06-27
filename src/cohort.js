@@ -13,6 +13,7 @@ class Cohort {
       email,
       githubUser
     )
+    console.log(student)
     this.students.push(student)
     return student
   }

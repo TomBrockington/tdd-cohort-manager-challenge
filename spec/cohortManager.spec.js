@@ -1,146 +1,131 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 const Cohort = require('../src/cohort')
 const CohortManager = require('../src/cohortManager')
-const student = require('../src/student')
+const Student = require('../src/student')
 
 describe('Cohort', () => {
+  let cohort
+  beforeEach(function () {
+    cohort = new Cohort()
+  })
+  let cohortManager
+  beforeEach(function () {
+    cohortManager = new CohortManager()
+  })
+  let student
+  beforeEach(function () {
+    student = new Student()
+  })
   it('create cohort', () => {
     // set up
-    const cohortManger = new CohortManager()
     const cohortName = 'Cohort 6'
     const expectedCohort = new Cohort(cohortName)
     // execute
-    const result = cohortManger.createCohort(cohortName)
+    const result = cohortManager.createCohort(cohortName)
     // verify
     expect(result).toEqual(expectedCohort)
   })
 
   it('search for cohort by name', () => {
     // set up
-    const cohortManger = new CohortManager()
     const cohortName = 'Cohort 2'
     const expectedCohort = new Cohort(cohortName)
     // execute
-    cohortManger.createCohort('Cohort 1')
-    cohortManger.createCohort(cohortName)
-    cohortManger.createCohort('Cohort 3')
-    const result = cohortManger.searchForCohortbyName(cohortName)
+    cohortManager.createCohort('Cohort 1')
+    cohortManager.createCohort(cohortName)
+    cohortManager.createCohort('Cohort 3')
+    const result = cohortManager.searchForCohortbyName(cohortName)
     // verify
-    expect(result).toEqual(expectedCohort)
+    expect(result).toEqual(true)
   })
 
   it('check non existant cohorts are detected', () => {
     // set up
-    const cohortManger = new CohortManager()
     const cohortName = 'Cohort 2'
     const expectedResult = false
     // execute
-    cohortManger.createCohort('Cohort 1')
-    cohortManger.createCohort('Cohort 3')
-    const result = cohortManger.searchForCohortbyName(cohortName)
+    cohortManager.createCohort('Cohort 1')
+    cohortManager.createCohort('Cohort 3')
+    const result = cohortManager.searchForCohortbyName(cohortName)
     // verify
+    // console.log(expectedResult)
     expect(result).toEqual(expectedResult)
   })
 
   it('check cohort exists', () => {
-    const cohortManger = new CohortManager()
     const cohortName = 'Cohort 2'
     const expectedResult = true
     // execute
-    cohortManger.createCohort(cohortName)
-    const result = cohortManger.checkCohortExists(cohortName)
+    cohortManager.createCohort(cohortName)
+    const result = cohortManager.checkCohortExists(cohortName)
     // verify
     expect(result).toEqual(expectedResult)
   })
 
-  it('check non existant cohort', () => {
-    const cohortManger = new CohortManager()
-    const cohortName = 'Cohort 2'
-    const expectedResult = false
+  it('name already exists error message', () => {
+    // set up
+    const expectedResult = 'Cohort 6 already exists'
     // execute
-    cohortManger.createCohort('Cohort 1')
-    const result = cohortManger.checkCohortExists(cohortName)
+    cohortManager.createCohort('Cohort 6')
+    const result = cohortManager.createCohort('Cohort 6')
     // verify
     expect(result).toEqual(expectedResult)
   })
 
-  // it('can create a chort with name.', () => {
-  //   // set up
-  //   const cohort = new Cohort()
-  //   const expectedResult = 'Cohort 6'
-  //   // execute
-  //   const result = cohort.create(expectedResult)
-  //   // verifiy
-  //   expect(result).toEqual(expectedResult)
-  // })
+  it('removed by name', () => {
+    // set up
+    const expectedResult = 'Cohort 6 removed'
+    // execute
+    cohortManager.createCohort('Cohort 6')
+    console.log('this', cohortManager.cohorts)
 
-  // it('name already exists error message', () => {
-  //   // set up
-  //   const cohort = new Cohort()
-  //   const expectedResult = 'Cohort 6 already exists'
-  //   // execute
-  //   cohort.createCohort('Cohort 6')
-  //   const result = cohort.createCohort('Cohort 6')
-  //   // verify
-  //   expect(result).toEqual(expectedResult)
-  // })
+    const result = cohortManager.removeCohort('Cohort 6')
+    console.log('this', cohortManager.cohorts)
 
-  // it('removed by name', () => {
-  //   // set up
-  //   const cohort = new Cohort()
-  //   const expectedResult = []
-  //   // execute
-  //   cohort.create('Cohort 6')
-  //   const result = cohort.removeCohort('Cohort 6')
-  //   // verify
-  //   expect(result).toEqual(expectedResult)
-  // })
+    // verify
+    expect(result).toEqual(expectedResult)
+  })
 
-  // it('add 3 then remove by name', () => {
-  //   // set up
-  //   const cohort = new Cohort()
-  //   const expectedResult = ['Cohort 4', 'Cohort 5']
-  //   // execute
-  //   cohort.create('Cohort 4')
-  //   cohort.create('Cohort 5')
-  //   cohort.create('Cohort 6')
-  //   const result = cohort.removeCohort('Cohort 6')
-  //   // verify
-  //   expect(result).toEqual(expectedResult)
-  // })
+  it('add 3 then remove by name', () => {
+    // set up
+    const expectedResult = 'Cohort 6 removed'
+    const expectedArrayResult = ['Cohort 4', 'Cohort 5']
+    // execute
+    cohortManager.createCohort('Cohort 4')
+    cohortManager.createCohort('Cohort 5')
+    cohortManager.createCohort('Cohort 6')
+    console.log('this', cohortManager.cohorts)
+    const result = cohortManager.removeCohort('Cohort 6')
+    console.log('this', cohortManager.cohorts)
 
-  // it('being removed not found ', () => {
-  //   // set up
-  //   const cohort = new Cohort()
-  //   const expectedResult = 'Cohort not found'
-  //   // execute
-  //   cohort.create('Cohort 6')
-  //   const result = cohort.removeCohort('Cohort 5')
-  //   // verify
-  //   expect(result).toEqual(expectedResult)
-  // })
+    // verify
+    expect(result).toEqual(expectedResult)
+  })
 
-  // it('search by name.', () => {
-  //   // set up
-  //   const cohort = new Cohort()
-  //   const expectedResult = 'Cohort 6'
-  //   // execute
-  //   cohort.create('Cohort 1')
-  //   cohort.create('Cohort 2')
-  //   cohort.create('Cohort 3')
-  //   cohort.create('Cohort 4')
-  //   cohort.create('Cohort 5')
-  //   cohort.create('Cohort 6')
-  //   const result = cohort.searchForCohortByName('Cohort 6')
-  //   // verifiy
-  //   expect(result).toEqual(expectedResult)
-  // })
+  it('being removed not found ', () => {
+    // set up
+    const expectedResult = 'Cohort Not Found'
+    // execute
+    cohortManager.createCohort('Cohort 6')
+    const result = cohortManager.removeCohort('Cohort 5')
+    // verify
+    expect(result).toEqual(expectedResult)
+  })
 
-  // it('can create a chort with name.', () => {
-  //   // set up
-  //   const cohort = new Cohort()
-
-  //   // execute
-  //   // verifiy
-  // })
+  it('search by name.', () => {
+    // set up
+    const expectedResult = true
+    // execute
+    cohortManager.createCohort('Cohort 1')
+    cohortManager.createCohort('Cohort 2')
+    cohortManager.createCohort('Cohort 3')
+    cohortManager.createCohort('Cohort 4')
+    cohortManager.createCohort('Cohort 5')
+    cohortManager.createCohort('Cohort 6')
+    const result = cohortManager.searchForCohortbyName('Cohort 6')
+    // verifiy
+    expect(result).toEqual(expectedResult)
+  })
 })
